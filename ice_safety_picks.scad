@@ -76,6 +76,7 @@ if(developmentRender)
 	display() itemModule();
 	displayGhost() spikeGhost(spikeCtrX1, picksY1+picksY2, direction=1);
 	displayGhost() spikeGhost(spikeCtrX2, 0, direction=0);
+	displayGhost() translate([picksX1, picksY1+picksY2, 0]) rotate([0,0,180]) itemModule();
 }
 else
 {
