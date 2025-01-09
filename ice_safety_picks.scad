@@ -57,9 +57,11 @@ module itemModule()
 		h(spikeCtrX2);
 
 		// Lanyard hole:
-		translate([picksX1/2, picksY2/2, -50])
+		translate([picksX1/2, picksY2/2, 0])
 		{
-			cylinder(d=lanyardHoleDia, h=100);
+			tcy([0,0,-50], d=lanyardHoleDia, h=100);
+			// Chamfers:
+			translate([0,0,picksZ/2]) doubleZ() translate([0,0,picksZ/2-lanyardHoleDia/2-4]) cylinder(d1=0, d2=20, h=10);
 		}
 	}
 }
@@ -76,7 +78,8 @@ module c(p)
 
 module clip(d=0)
 {
-	tc([-200, -200, picksZ/2-d], 400);
+	// tc([-200, -200, picksZ/2-d], 400);
+	// tc([picksX1/2-d, -200, -200], 400);
 }
 
 if(developmentRender)
