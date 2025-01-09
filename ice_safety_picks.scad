@@ -10,6 +10,8 @@ picksZ = picksX2;
 picksCornerDia = 8;
 picksCZ = 3;
 
+spikeDia = 5/32 * 25.4 + 0.3;
+
 x1 = picksX1-picksCornerDia;
 x2= picksX2 - picksCornerDia;
 y1 = picksY1 - picksCornerDia;
@@ -25,17 +27,33 @@ p7 = [x2, y1,  0];
 
 module itemModule()
 {
-	hull()
+	difference()
 	{
-		c(p1); c(p2);
-		c(p5); c(p3);
-	}
+		// Exterior:
+		translate([picksCornerDia/2, picksCornerDia/2, 0])
+		{
+			hull()
+			{
+				c(p1); c(p2);
+				c(p5); c(p3);
+			}
 
-	hull()
-	{
-		c(p1); c(p4);
-		c(p6); c(p7);
+			hull()
+			{
+				c(p1); c(p4);
+				c(p6); c(p7);
+			}
+		}
+
+		// Spike holes:
+		h(picksX1*0.75);
+		h(picksX2*0.5);
 	}
+}
+
+module h(x)
+{
+	translate([x, -10, picksZ/2]) rotate([-90,0,0]) cylinder(d=spikeDia, h=400);
 }
 
 module c(p)
@@ -45,7 +63,7 @@ module c(p)
 
 module clip(d=0)
 {
-	//tc([-200, -400-d, -10], 400);
+	// tc([-200, -200, picksZ/2-d], 400);
 }
 
 if(developmentRender)
