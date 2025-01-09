@@ -14,6 +14,8 @@ picksCZ = 3;
 
 spikeDia = 5/32 * 25.4 + 0.3;
 
+lanyardHoleDia = 5.5;
+
 spikeCtrX1 = picksX1*0.75;
 spikeCtrX2 = picksX1*0.25;
 
@@ -53,6 +55,12 @@ module itemModule()
 		// Spike holes:
 		h(spikeCtrX1);
 		h(spikeCtrX2);
+
+		// Lanyard hole:
+		translate([picksX1/2, picksY2/2, -50])
+		{
+			cylinder(d=lanyardHoleDia, h=100);
+		}
 	}
 }
 
