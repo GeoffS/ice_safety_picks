@@ -1,6 +1,9 @@
 include <../OpenSCADdesigns/MakeInclude.scad>
 include <../OpenSCADdesigns/chamferedCylinders.scad>
 
+makePickBody = false;
+makePickModifier = false;
+
 picksX1 = 50;
 picksX2 = picksX1/2;
 picksY2 = picksX2;
@@ -33,7 +36,17 @@ p5 = [ 0, y2,  0];
 p6 = [ 0, y1,  0];
 p7 = [x2, y1,  0];
 
-module itemModule()
+modifierDia = picksZ - picksCZ*2 - 1;
+modifierY = modifierDia;
+modifierOffsetY = 1;
+modifierEndY = modifierY + modifierOffsetY;
+
+module pickModifer()
+{
+	translate([spikeCtrX2, modifierOffsetY, picksZ/2]) rotate([-90,0,0]) cylinder(d1=modifierDia, d2=spikeDia, h=modifierY);
+}
+
+module pickBody()
 {
 	difference()
 	{
@@ -87,7 +100,7 @@ module itemModule()
 
 module h(xLocation)
 {
-	translate([xLocation, -10, picksZ/2]) rotate([-90,0,0]) cylinder(d=spikeDia, h=400);
+	translate([xLocation, modifierEndY, picksZ/2]) rotate([-90,0,0]) cylinder(d=spikeDia, h=400);
 }
 
 module c(p)
@@ -97,24 +110,30 @@ module c(p)
 
 module clip(d=0)
 {
-	// tc([-200, -200, picksZ/2-d], 400);
+	tc([-200, -200, picksZ/2-d], 400);
 	// tc([picksX1/2-d, -200, -200], 400);
 }
 
 if(developmentRender)
 {
-	display() itemModule();
+	display() pickModifer();
+	displayGhost() pickBody();
 	displayGhost() spikeGhost(spikeCtrX2);
-	
-	displayGhost() translate([picksX1+spikeCtrOffsetX, picksY1+picksY2, 0]) rotate([0,0,180]) 
-	{
-		itemModule();
-		spikeGhost(spikeCtrX2);
-	}
+
+
+	// display() pickBody();
+	// displayGhost() spikeGhost(spikeCtrX2);
+
+	// displayGhost() translate([picksX1+spikeCtrOffsetX, picksY1+picksY2, 0]) rotate([0,0,180]) 
+	// {
+	// 	pickBody();
+	// 	spikeGhost(spikeCtrX2);
+	// }
 }
 else
 {
-	itemModule();
+	if(makePickBody) pickBody();
+	if(makePickModifier) pickModifer();
 }
 
 module spikeGhost(xLocation)
