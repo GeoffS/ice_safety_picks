@@ -88,8 +88,8 @@ module pickBody()
 		}
 
 		// Spike holes:
-		h(spikeCtrX1+spikeCtrOffsetX);
-		h(spikeCtrX2);
+		h(spikeCtrX1+spikeCtrOffsetX, -10);
+		h(spikeCtrX2, modifierEndY);
 
 		// Lanyard hole:
 		translate([picksX1/2, picksY2/2, 0])
@@ -101,9 +101,9 @@ module pickBody()
 	}
 }
 
-module h(xLocation)
+module h(xLocation, yLocation)
 {
-	translate([xLocation, modifierEndY, picksZ/2]) rotate([-90,0,0]) cylinder(d=spikeDia, h=400);
+	translate([xLocation, yLocation, picksZ/2]) rotate([-90,0,0]) cylinder(d=spikeDia, h=400);
 }
 
 module c(p)
@@ -119,19 +119,19 @@ module clip(d=0)
 
 if(developmentRender)
 {
-	display() pickModifer();
-	displayGhost() pickBody();
-	displayGhost() spikeGhost();
-
-
-	// display() pickBody();
+	// display() pickModifer();
+	// displayGhost() pickBody();
 	// displayGhost() spikeGhost();
 
-	// displayGhost() translate([picksX1+spikeCtrOffsetX, picksY1+picksY2, 0]) rotate([0,0,180]) 
-	// {
-	// 	pickBody();
-	// 	spikeGhost();
-	// }
+
+	display() pickBody();
+	displayGhost() spikeGhost();
+
+	displayGhost() translate([picksX1+spikeCtrOffsetX, picksY1+picksY2, 0]) rotate([0,0,180]) 
+	{
+		pickBody();
+		spikeGhost();
+	}
 }
 else
 {
