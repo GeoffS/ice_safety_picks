@@ -19,8 +19,8 @@ lanyardHoleDia = 5.5;
 spikeCtrX1 = picksX1*0.75;
 spikeCtrX2 = picksX1*0.25;
 
-x1 = picksX1-picksCornerDia;
-x2= picksX2 - picksCornerDia;
+x1 = picksX1  -picksCornerDia;
+x2 = picksX2 - picksCornerDia;
 y1 = picksY1 - picksCornerDia;
 y2 = picksY2 - picksCornerDia;
 
@@ -39,17 +39,35 @@ module itemModule()
 		// Exterior:
 		translate([picksCornerDia/2, picksCornerDia/2, 0])
 		{
-			hull()
+			union()
 			{
-				c(p1); c(p2);
-				c(p5); c(p3);
+				hull()
+				{
+					c(p1); c(p2);
+					c(p5); c(p3);
+				}
+
+				hull()
+				{
+					c(p1); c(p4);
+					c(p6); c(p7);
+				}
 			}
 
-			hull()
+			// Inside corner filler:
+			translate([picksX2, picksY2, 0])
 			{
-				c(p1); c(p4);
-				c(p6); c(p7);
+				cfXY = picksCZ + picksCornerDia/2;
+				tcu([-cfXY, -cfXY, 0], [cfXY, cfXY, picksZ]);
 			}
+		}
+
+		// Inside oorner treatment:
+		translate([picksX2+picksCornerDia/2, picksY2+picksCornerDia/2, 0])
+		{
+			tcy([0,0,0], d=picksCornerDia, h=picksZ);
+			translate([0, 0, picksZ-picksCZ-picksCornerDia/2]) cylinder(d2=20, d1=0, h=10);
+			translate([0, 0,    -10+picksCZ+picksCornerDia/2]) cylinder(d1=20, d2=0, h=10);
 		}
 
 		// Spike holes:
