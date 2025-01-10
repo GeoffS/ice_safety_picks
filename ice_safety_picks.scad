@@ -16,6 +16,7 @@ spikeDia = 5/32 * 25.4 + 0.3;
 
 lanyardHoleDia = 5.5;
 
+spikeCtrOffsetX = 0.1;
 spikeCtrX1 = picksX1*0.75;
 spikeCtrX2 = picksX1*0.25;
 
@@ -71,7 +72,7 @@ module itemModule()
 		}
 
 		// Spike holes:
-		h(spikeCtrX1);
+		h(spikeCtrX1+spikeCtrOffsetX);
 		h(spikeCtrX2);
 
 		// Lanyard hole:
@@ -103,22 +104,26 @@ module clip(d=0)
 if(developmentRender)
 {
 	display() itemModule();
-	displayGhost() spikeGhost(spikeCtrX1, picksY1+picksY2, direction=1);
-	displayGhost() spikeGhost(spikeCtrX2, 0, direction=0);
-	displayGhost() translate([picksX1, picksY1+picksY2, 0]) rotate([0,0,180]) itemModule();
+	displayGhost() spikeGhost(spikeCtrX2);
+	
+	displayGhost() translate([picksX1+spikeCtrOffsetX, picksY1+picksY2, 0]) rotate([0,0,180]) 
+	{
+		itemModule();
+		spikeGhost(spikeCtrX2);
+	}
 }
 else
 {
 	itemModule();
 }
 
-module spikeGhost(xLocation, yLocation, direction)
+module spikeGhost(xLocation)
 {
 	d = 5/32*25.4;
 	h = 6*25.4;
 	tip = 4;
 
-	translate([0,yLocation-h*direction,0]) mirror([0,direction,0]) translate([0,-direction*h,0]) translate([xLocation, 0, picksZ/2]) rotate([-90,0,0]) 
+	translate([0,-h*0,0]) mirror([0,0,0]) translate([0,-0*h,0]) translate([xLocation, 0, picksZ/2]) rotate([-90,0,0]) 
 	{
 		tcy([0,0,0], d=d, h=h-tip);
 		translate([0,0,h-tip]) cylinder(d2=0, d1=d, h=tip);
