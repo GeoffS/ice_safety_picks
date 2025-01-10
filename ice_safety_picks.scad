@@ -15,7 +15,10 @@ echo("picksY1 =", picksY1);
 picksCornerDia = 8;
 picksCZ = 3;
 
+spikeLength = 5.2 * 25.4;
 spikeDia = 5/32 * 25.4 + 0.3;
+
+echo("spikeLength = ", spikeLength);
 
 lanyardHoleDia = 5.5;
 
@@ -118,16 +121,16 @@ if(developmentRender)
 {
 	display() pickModifer();
 	displayGhost() pickBody();
-	displayGhost() spikeGhost(spikeCtrX2);
+	displayGhost() spikeGhost();
 
 
 	// display() pickBody();
-	// displayGhost() spikeGhost(spikeCtrX2);
+	// displayGhost() spikeGhost();
 
 	// displayGhost() translate([picksX1+spikeCtrOffsetX, picksY1+picksY2, 0]) rotate([0,0,180]) 
 	// {
 	// 	pickBody();
-	// 	spikeGhost(spikeCtrX2);
+	// 	spikeGhost();
 	// }
 }
 else
@@ -136,15 +139,14 @@ else
 	if(makePickModifier) pickModifer();
 }
 
-module spikeGhost(xLocation)
+module spikeGhost()
 {
 	d = 5/32*25.4;
-	h = 6*25.4;
 	tip = 4;
 
-	translate([0,-h*0,0]) mirror([0,0,0]) translate([0,-0*h,0]) translate([xLocation, 0, picksZ/2]) rotate([-90,0,0]) 
+	translate([spikeCtrX2, modifierEndY+0.2, picksZ/2]) rotate([-90,0,0]) 
 	{
-		tcy([0,0,0], d=d, h=h-tip);
-		translate([0,0,h-tip]) cylinder(d2=0, d1=d, h=tip);
+		tcy([0,0,0], d=d, h=spikeLength-tip);
+		translate([0,0,spikeLength-tip]) cylinder(d2=0, d1=d, h=tip);
 	}
 }
