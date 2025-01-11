@@ -93,6 +93,15 @@ module pickBody()
 		spikeHole(spikeCtrX1, -10);
 		spikeHole(spikeCtrX2, modifierEndY);
 
+		// Thumb depression:
+		thumbDepressionDia = 85;
+		translate([spikeCtrX2, -thumbDepressionDia/2+1, picksZ/2]) hull()
+		{
+			tsp([-30, 0, 0], d=thumbDepressionDia);
+			tsp([  8, 0, 0], d=thumbDepressionDia);
+		}
+		
+
 		// Lanyard hole:
 		translate([picksX1/2, picksY2/2, 0])
 		{
@@ -125,7 +134,7 @@ module c(p)
 
 module clip(d=0)
 {
-	tc([-200, -200, picksZ/2-d], 400);
+	// tc([-200, -200, picksZ/2-d], 400);
 	// tc([picksX1/2-d, -200, -200], 400);
 }
 
