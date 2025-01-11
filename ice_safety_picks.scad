@@ -39,9 +39,9 @@ p5 = [ 0, y2,  0];
 p6 = [ 0, y1,  0];
 p7 = [x2, y1,  0];
 
-modifierDia = picksZ - picksCZ*2 - 1;
+modifierDia = picksZ - picksCZ*2 - 2;
 modifierY = modifierDia;
-modifierOffsetY = 1;
+modifierOffsetY = 2;
 modifierEndY = modifierY + modifierOffsetY;
 
 module pickModifer()
@@ -113,7 +113,7 @@ module c(p)
 
 module clip(d=0)
 {
-	// tc([-200, -200, picksZ/2-d], 400);
+	tc([-200, -200, picksZ/2-d], 400);
 	// tc([picksX1/2-d, -200, -200], 400);
 }
 
