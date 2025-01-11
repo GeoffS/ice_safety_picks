@@ -1,6 +1,8 @@
 include <../OpenSCADdesigns/MakeInclude.scad>
 include <../OpenSCADdesigns/chamferedCylinders.scad>
 
+perimeterWidth = 0.42;
+
 makePickBody = false;
 makePickModifier = false;
 
@@ -23,7 +25,7 @@ echo("spikeLength = ", spikeLength);
 lanyardHoleDia = 5.5;
 
 spikeCtrOffsetX = 0.1;
-spikeCtrX1 = picksX1*0.75;
+spikeCtrX1 = picksX1*0.75 + spikeCtrOffsetX;
 spikeCtrX2 = picksX1*0.25;
 
 x1 = picksX1  -picksCornerDia;
@@ -88,8 +90,8 @@ module pickBody()
 		}
 
 		// Spike holes:
-		h(spikeCtrX1+spikeCtrOffsetX, -10);
-		h(spikeCtrX2, modifierEndY);
+		spikeHole(spikeCtrX1, -10);
+		spikeHole(spikeCtrX2, modifierEndY);
 
 		// Lanyard hole:
 		translate([picksX1/2, picksY2/2, 0])
@@ -99,11 +101,21 @@ module pickBody()
 			translate([0,0,picksZ/2]) doubleZ() translate([0,0,picksZ/2-lanyardHoleDia/2-4]) cylinder(d1=0, d2=20, h=10);
 		}
 	}
+	
+	// Spike hole sacrificial layers:
+	spikeHoleSacrificialLayer(spikeCtrX1, 0);
+	spikeHoleSacrificialLayer(spikeCtrX1, picksY2-perimeterWidth);
+	spikeHoleSacrificialLayer(spikeCtrX2, picksY1-perimeterWidth);
 }
 
-module h(xLocation, yLocation)
+module spikeHole(xLocation, yLocation)
 {
 	translate([xLocation, yLocation, picksZ/2]) rotate([-90,0,0]) cylinder(d=spikeDia, h=400);
+}
+
+module spikeHoleSacrificialLayer(xLocation, yLocation)
+{
+	translate([xLocation, yLocation, picksZ/2]) rotate([-90,0,0]) cylinder(d=spikeDia+2, h=perimeterWidth);
 }
 
 module c(p)
