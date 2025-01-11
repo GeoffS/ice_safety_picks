@@ -9,10 +9,11 @@ makePickModifier = false;
 picksX1 = 50;
 picksX2 = picksX1/2;
 picksY2 = picksX2;
-picksY1 = 154 - picksY2;
+picksY1 = 154;
+picksY1a = picksY1 - picksY2;
 picksZ = picksX2;
 
-echo("picksY1 =", picksY1);
+echo("picksY1a =", picksY1a);
 
 picksCornerDia = 8;
 picksCZ = 3;
@@ -30,7 +31,7 @@ spikeCtrX2 = picksX1*0.25;
 
 x1 = picksX1  -picksCornerDia;
 x2 = picksX2 - picksCornerDia;
-y1 = picksY1 - picksCornerDia;
+y1 = picksY1a - picksCornerDia;
 y2 = picksY2 - picksCornerDia;
 
 p1 = [ 0,  0,  0];
@@ -101,6 +102,14 @@ module pickBody()
 			tsp([  8, 0, 0], d=thumbDepressionDia);
 		}
 		
+		// Magnet recesses:
+		magnetDia = 10.1;
+		magnetThickness = 2.1;
+		translate([picksX2-magnetThickness, picksY1/2, picksZ/2]) rotate([0,90,0])
+		{
+			cylinder(d=magnetDia, h=10);
+			doubleY() translate([0, 35, 0]) cylinder(d=magnetDia, h=10);
+		}
 
 		// Lanyard hole:
 		translate([picksX1/2, picksY2/2, 0])
@@ -114,7 +123,7 @@ module pickBody()
 	// Spike hole sacrificial layers:
 	spikeHoleSacrificialLayer(spikeCtrX1, 0);
 	spikeHoleSacrificialLayer(spikeCtrX1, picksY2-perimeterWidth);
-	spikeHoleSacrificialLayer(spikeCtrX2, picksY1-perimeterWidth);
+	spikeHoleSacrificialLayer(spikeCtrX2, picksY1a-perimeterWidth);
 }
 
 module spikeHole(xLocation, yLocation)
@@ -134,7 +143,7 @@ module c(p)
 
 module clip(d=0)
 {
-	// tc([-200, -200, picksZ/2-d], 400);
+	tc([-200, -200, picksZ/2-d], 400);
 	// tc([picksX1/2-d, -200, -200], 400);
 }
 
@@ -148,7 +157,7 @@ if(developmentRender)
 	display() pickBody();
 	displayGhost() spikeGhost();
 
-	displayGhost() translate([picksX1+spikeCtrOffsetX, picksY1+picksY2, 0]) rotate([0,0,180]) 
+	displayGhost() translate([picksX1+spikeCtrOffsetX, picksY1a+picksY2, 0]) rotate([0,0,180]) 
 	{
 		pickBody();
 		spikeGhost();
