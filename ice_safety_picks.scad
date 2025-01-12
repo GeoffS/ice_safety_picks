@@ -49,7 +49,7 @@ modifierEndY = modifierY + modifierOffsetY;
 
 module pickModifer()
 {
-	translate([spikeCtrX2, modifierOffsetY, picksZ/2]) rotate([-90,0,0]) cylinder(d1=modifierDia, d2=spikeDia, h=modifierY);
+	translate([spikeCtrX2, modifierOffsetY, picksZ/2]) rotate([-90,0,0]) cylinder(d1=modifierDia, d2=spikeDia+8*perimeterWidth, h=modifierY);
 }
 
 module pickBody()
