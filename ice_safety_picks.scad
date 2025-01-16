@@ -16,7 +16,7 @@ picksZ = picksX2;
 
 echo("picksY1 =", picksY1);
 
-picksCornerDia = 8;
+picksCornerDia = 12;
 picksCZ = 3;
 
 spikeLength = 5.2 * 25.4;
@@ -146,7 +146,7 @@ module c(p)
 
 module clip(d=0)
 {
-	tc([-200, -200, picksZ/2-d], 400);
+	// tc([-200, -200, picksZ/2-d], 400);
 	// tc([picksX1/2-d, -200, -200], 400);
 }
 
@@ -158,7 +158,7 @@ if(developmentRender)
 
 
 	display() pick_1_4();
-	%pickModifer_1_4();
+	// %pickModifer_1_4();
 	displayGhost() spikeGhost(1/4);
 
 	displayGhost() translate([picksX1+spikeCtrOffsetX, picksY1+picksY2, 0]) rotate([0,0,180]) 
