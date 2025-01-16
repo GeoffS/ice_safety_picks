@@ -1,8 +1,12 @@
 include <../OpenSCADdesigns/MakeInclude.scad>
 include <../OpenSCADdesigns/chamferedCylinders.scad>
 
-makePickBody = false;
-makePickModifier = false;
+makePickBody_5_32 = false;
+makePickModifier_5_32 = false;
+makePickBody_3_16 = false;
+makePickModifier_3_16 = false;
+makePickBody_1_4 = false;
+makePickModifier_1_4 = false;
 
 picksX1 = 50;
 picksX2 = picksX1/2;
@@ -16,7 +20,6 @@ picksCornerDia = 8;
 picksCZ = 3;
 
 spikeLength = 5.2 * 25.4;
-spikeDia = 5/32 * 25.4 + 0.3;
 
 echo("spikeLength = ", spikeLength);
 
@@ -44,12 +47,42 @@ modifierY = modifierDia;
 modifierOffsetY = 2;
 modifierEndY = modifierY + modifierOffsetY;
 
-module pickModifer()
+module pickModifer_5_32()
 {
-	translate([spikeCtrX2, modifierOffsetY, picksZ/2]) rotate([-90,0,0]) cylinder(d1=modifierDia, d2=spikeDia, h=modifierY);
+	pickModiferCore(spikeHoleDiameter = 5/32 * 25.4 + 0.3);
 }
 
-module pickBody()
+module pickModifer_3_16()
+{
+	pickModiferCore(spikeHoleDiameter = 3/16 * 25.4 + 0.3);
+}
+
+module pickModifer_1_4()
+{
+	pickModiferCore(spikeHoleDiameter = 1/4 * 25.4 + 0.3);
+}
+
+module pickModiferCore(spikeHoleDiameter)
+{
+	translate([spikeCtrX2, modifierOffsetY, picksZ/2]) rotate([-90,0,0]) cylinder(d1=modifierDia, d2=spikeHoleDiameter + 2, h=modifierY);
+}
+
+module pick_5_32()
+{
+	pickBodyCore(spikeHoleDiameter = 5/32 * 25.4 + 0.3);
+}
+
+module pick_3_16()
+{
+	pickBodyCore(spikeHoleDiameter = 3/16 * 25.4 + 0.3);
+}
+
+module pick_1_4()
+{
+	pickBodyCore(spikeHoleDiameter = 1/4 * 25.4 + 0.3);
+}
+
+module pickBodyCore(spikeHoleDiameter)
 {
 	difference()
 	{
@@ -88,8 +121,8 @@ module pickBody()
 		}
 
 		// Spike holes:
-		h(spikeCtrX1+spikeCtrOffsetX, -10);
-		h(spikeCtrX2, modifierEndY);
+		h(spikeCtrX1+spikeCtrOffsetX, -10, spikeHoleDiameter);
+		h(spikeCtrX2, modifierEndY, spikeHoleDiameter);
 
 		// Lanyard hole:
 		translate([picksX1/2, picksY2/2, 0])
@@ -101,9 +134,9 @@ module pickBody()
 	}
 }
 
-module h(xLocation, yLocation)
+module h(xLocation, yLocation, spikeHoleDiameter)
 {
-	translate([xLocation, yLocation, picksZ/2]) rotate([-90,0,0]) cylinder(d=spikeDia, h=400);
+	translate([xLocation, yLocation, picksZ/2]) rotate([-90,0,0]) cylinder(d=spikeHoleDiameter, h=400);
 }
 
 module c(p)
@@ -124,24 +157,31 @@ if(developmentRender)
 	// displayGhost() spikeGhost();
 
 
-	display() pickBody();
-	displayGhost() spikeGhost();
+	display() pick_1_4();
+	%pickModifer_1_4();
+	displayGhost() spikeGhost(1/4);
 
 	displayGhost() translate([picksX1+spikeCtrOffsetX, picksY1+picksY2, 0]) rotate([0,0,180]) 
 	{
-		pickBody();
-		spikeGhost();
+		pick_1_4();
+		spikeGhost(1/4);
 	}
 }
 else
 {
-	if(makePickBody) pickBody();
-	if(makePickModifier) pickModifer();
+	if(makePickBody_5_32) pick_5_32();
+	if(makePickModifier_5_32) pickModifer_5_32();
+
+	if(makePickBody_3_16) pick_3_16();
+	if(makePickModifier_3_16) pickModifer_3_16();
+
+	if(makePickBody_1_4) pick_1_4();
+	if(makePickModifier_1_4) pickModifer_1_4();
 }
 
-module spikeGhost()
+module spikeGhost(spikeDia_inch)
 {
-	d = 5/32*25.4;
+	d = spikeDia_inch*25.4;
 	tip = 4;
 
 	translate([spikeCtrX2, modifierEndY+0.2, picksZ/2]) rotate([-90,0,0]) 
