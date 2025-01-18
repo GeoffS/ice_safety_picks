@@ -171,7 +171,8 @@ module spikeHoleSacrificialLayer(xLocation, yLocation, spikeHoleDiameter)
 
 module c(p)
 {
-	translate(p) simpleChamferedCylinderDoubleEnded1(d=picksCornerDia, h=picksZ, cz=picksCZ);
+	// translate(p) simpleChamferedCylinderDoubleEnded1(d=picksCornerDia, h=picksZ, cz=picksCZ);
+	translate(p) radiusedChamferedCylinderDoubleEnded(d=picksCornerDia, h=picksZ, r=7, cz=picksCZ);
 }
 
 module clip(d=0)
