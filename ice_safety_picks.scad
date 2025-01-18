@@ -3,8 +3,12 @@ include <../OpenSCADdesigns/chamferedCylinders.scad>
 
 perimeterWidth = 0.42;
 
-makePickBody = false;
-makePickModifier = false;
+makePickBody_5_32 = false;
+makePickModifier_5_32 = false;
+makePickBody_3_16 = false;
+makePickModifier_3_16 = false;
+makePickBody_1_4 = false;
+makePickModifier_1_4 = false;
 
 picksX1 = 50;
 picksX2 = picksX1/2;
@@ -15,11 +19,10 @@ picksZ = picksX2;
 
 echo("picksY1a =", picksY1a);
 
-picksCornerDia = 8;
+picksCornerDia = 12;
 picksCZ = 3;
 
 spikeLength = 5.2 * 25.4;
-spikeDia = 5/32 * 25.4 + 0.3;
 
 echo("spikeLength = ", spikeLength);
 
@@ -47,12 +50,42 @@ modifierY = modifierDia;
 modifierOffsetY = 2;
 modifierEndY = modifierY + modifierOffsetY;
 
-module pickModifer()
+module pickModifer_5_32()
 {
-	translate([spikeCtrX2, modifierOffsetY, picksZ/2]) rotate([-90,0,0]) cylinder(d1=modifierDia, d2=spikeDia+8*perimeterWidth, h=modifierY);
+	pickModiferCore(spikeHoleDiameter = 5/32 * 25.4 + 0.3);
 }
 
-module pickBody()
+module pickModifer_3_16()
+{
+	pickModiferCore(spikeHoleDiameter = 3/16 * 25.4 + 0.3);
+}
+
+module pickModifer_1_4()
+{
+	pickModiferCore(spikeHoleDiameter = 1/4 * 25.4 + 0.3);
+}
+
+module pickModiferCore(spikeHoleDiameter)
+{
+	translate([spikeCtrX2, modifierOffsetY, picksZ/2]) rotate([-90,0,0]) cylinder(d1=modifierDia, d2=spikeHoleDiameter + 2, h=modifierY);
+}
+
+module pick_5_32()
+{
+	pickBodyCore(spikeHoleDiameter = 5/32 * 25.4 + 0.3);
+}
+
+module pick_3_16()
+{
+	pickBodyCore(spikeHoleDiameter = 3/16 * 25.4 + 0.3);
+}
+
+module pick_1_4()
+{
+	pickBodyCore(spikeHoleDiameter = 1/4 * 25.4 + 0.3);
+}
+
+module pickBodyCore(spikeHoleDiameter)
 {
 	difference()
 	{
@@ -82,7 +115,7 @@ module pickBody()
 			}
 		}
 
-		// Inside oorner treatment:
+		// Inside corner treatment:
 		translate([picksX2+picksCornerDia/2, picksY2+picksCornerDia/2, 0])
 		{
 			tcy([0,0,0], d=picksCornerDia, h=picksZ);
@@ -91,8 +124,8 @@ module pickBody()
 		}
 
 		// Spike holes:
-		spikeHole(spikeCtrX1, -10);
-		spikeHole(spikeCtrX2, modifierEndY);
+		spikeHole(spikeCtrX1+spikeCtrOffsetX, -10, spikeHoleDiameter);
+		spikeHole(spikeCtrX2, modifierEndY, spikeHoleDiameter);
 
 		// Thumb depression:
 		thumbDepressionDia = 85;
@@ -121,19 +154,19 @@ module pickBody()
 	}
 	
 	// Spike hole sacrificial layers:
-	spikeHoleSacrificialLayer(spikeCtrX1, 0);
-	spikeHoleSacrificialLayer(spikeCtrX1, picksY2-perimeterWidth);
-	spikeHoleSacrificialLayer(spikeCtrX2, picksY1a-perimeterWidth);
+	spikeHoleSacrificialLayer(spikeCtrX1, 0, spikeHoleDiameter);
+	spikeHoleSacrificialLayer(spikeCtrX1, picksY2-perimeterWidth, spikeHoleDiameter);
+	spikeHoleSacrificialLayer(spikeCtrX2, picksY1a-perimeterWidth, spikeHoleDiameter);
 }
 
-module spikeHole(xLocation, yLocation)
+module spikeHole(xLocation, yLocation, spikeHoleDiameter)
 {
-	translate([xLocation, yLocation, picksZ/2]) rotate([-90,0,0]) cylinder(d=spikeDia, h=400);
+	translate([xLocation, yLocation, picksZ/2]) rotate([-90,0,0]) cylinder(d=spikeHoleDiameter, h=400);
 }
 
-module spikeHoleSacrificialLayer(xLocation, yLocation)
+module spikeHoleSacrificialLayer(xLocation, yLocation, spikeHoleDiameter)
 {
-	translate([xLocation, yLocation, picksZ/2]) rotate([-90,0,0]) cylinder(d=spikeDia+2, h=perimeterWidth);
+	translate([xLocation, yLocation, picksZ/2]) rotate([-90,0,0]) cylinder(d=spikeHoleDiameter+2, h=perimeterWidth);
 }
 
 module c(p)
@@ -154,24 +187,31 @@ if(developmentRender)
 	// displayGhost() spikeGhost();
 
 
-	display() pickBody();
-	displayGhost() spikeGhost();
+	display() pick_1_4();
+	// %pickModifer_1_4();
+	displayGhost() spikeGhost(1/4);
 
 	displayGhost() translate([picksX1+spikeCtrOffsetX, picksY1a+picksY2, 0]) rotate([0,0,180]) 
 	{
-		pickBody();
-		spikeGhost();
+		pick_1_4();
+		spikeGhost(1/4);
 	}
 }
 else
 {
-	if(makePickBody) pickBody();
-	if(makePickModifier) pickModifer();
+	if(makePickBody_5_32) pick_5_32();
+	if(makePickModifier_5_32) pickModifer_5_32();
+
+	if(makePickBody_3_16) pick_3_16();
+	if(makePickModifier_3_16) pickModifer_3_16();
+
+	if(makePickBody_1_4) pick_1_4();
+	if(makePickModifier_1_4) pickModifer_1_4();
 }
 
-module spikeGhost()
+module spikeGhost(spikeDia_inch)
 {
-	d = 5/32*25.4;
+	d = spikeDia_inch*25.4;
 	tip = 4;
 
 	translate([spikeCtrX2, modifierEndY+0.2, picksZ/2]) rotate([-90,0,0]) 
