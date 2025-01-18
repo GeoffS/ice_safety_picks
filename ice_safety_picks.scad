@@ -96,14 +96,14 @@ module pickBodyCore(spikeHoleDiameter)
 			{
 				hull()
 				{
-					c(p1); c(p2);
-					c(p5); c(p3);
+					corner(p1); corner(p2);
+					corner(p5); corner(p3);
 				}
 
 				hull()
 				{
-					c(p1); c(p4);
-					c(p6); c(p7);
+					corner(p1); corner(p4);
+					corner(p6); corner(p7);
 				}
 			}
 
@@ -169,7 +169,7 @@ module spikeHoleSacrificialLayer(xLocation, yLocation, spikeHoleDiameter)
 	translate([xLocation, yLocation, picksZ/2]) rotate([-90,0,0]) cylinder(d=spikeHoleDiameter+2, h=perimeterWidth);
 }
 
-module c(p)
+module corner(p)
 {
 	// translate(p) simpleChamferedCylinderDoubleEnded1(d=picksCornerDia, h=picksZ, cz=picksCZ);
 	translate(p) radiusedChamferedCylinderDoubleEnded(d=picksCornerDia, h=picksZ, r=7, cz=picksCZ);
