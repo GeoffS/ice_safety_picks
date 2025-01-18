@@ -19,8 +19,8 @@ picksZ = picksX2;
 
 echo("picksY1a =", picksY1a);
 
-picksCornerDia = 12;
-picksCZ = 3;
+picksCornerDia = 14;
+picksCZ = 5;
 
 spikeLength = 5.2 * 25.4;
 
@@ -28,14 +28,14 @@ echo("spikeLength = ", spikeLength);
 
 lanyardHoleDia = 5.5;
 
-spikeCtrOffsetX = 0.1;
+spikeCtrOffsetX = 0.2;
 spikeCtrX1 = picksX1*0.75 + spikeCtrOffsetX;
 spikeCtrX2 = picksX1*0.25;
 
-x1 = picksX1  -picksCornerDia;
-x2 = picksX2 - picksCornerDia;
+x1 = picksX1  - picksCornerDia;
+x2 = picksX2  - picksCornerDia;
 y1 = picksY1a - picksCornerDia;
-y2 = picksY2 - picksCornerDia;
+y2 = picksY2  - picksCornerDia;
 
 p1 = [ 0,  0,  0];
 p2 = [x1,  0,  0];
@@ -119,8 +119,8 @@ module pickBodyCore(spikeHoleDiameter)
 		translate([picksX2+picksCornerDia/2, picksY2+picksCornerDia/2, 0])
 		{
 			tcy([0,0,0], d=picksCornerDia, h=picksZ);
-			translate([0, 0, picksZ-picksCZ-picksCornerDia/2]) cylinder(d2=20, d1=0, h=10);
-			translate([0, 0,    -10+picksCZ+picksCornerDia/2]) cylinder(d1=20, d2=0, h=10);
+			translate([0, 0, picksZ - picksCZ - picksCornerDia/2]) cylinder(d2=30, d1=0, h=15);
+			translate([0, 0,    -15 + picksCZ + picksCornerDia/2]) cylinder(d1=30, d2=0, h=15);
 		}
 
 		// Spike holes:
@@ -128,7 +128,7 @@ module pickBodyCore(spikeHoleDiameter)
 		spikeHole(spikeCtrX2, modifierEndY, spikeHoleDiameter);
 
 		// Thumb depression:
-		thumbDepressionDia = 85;
+		thumbDepressionDia = 50;
 		translate([spikeCtrX2, -thumbDepressionDia/2+1, picksZ/2]) hull()
 		{
 			tsp([-30, 0, 0], d=thumbDepressionDia);
@@ -145,7 +145,7 @@ module pickBodyCore(spikeHoleDiameter)
 		}
 
 		// Lanyard hole:
-		translate([picksX1/2, picksY2/2, 0])
+		translate([picksX1/2, picksY2/2 + 0.5, 0])
 		{
 			tcy([0,0,-50], d=lanyardHoleDia, h=100);
 			// Chamfers:
@@ -153,10 +153,10 @@ module pickBodyCore(spikeHoleDiameter)
 		}
 	}
 	
-	// Spike hole sacrificial layers:
-	spikeHoleSacrificialLayer(spikeCtrX1, 0, spikeHoleDiameter);
-	spikeHoleSacrificialLayer(spikeCtrX1, picksY2-perimeterWidth, spikeHoleDiameter);
-	spikeHoleSacrificialLayer(spikeCtrX2, picksY1a-perimeterWidth, spikeHoleDiameter);
+	// // Spike hole sacrificial layers:
+	// spikeHoleSacrificialLayer(spikeCtrX1, 0, spikeHoleDiameter);
+	// spikeHoleSacrificialLayer(spikeCtrX1, picksY2-perimeterWidth, spikeHoleDiameter);
+	// spikeHoleSacrificialLayer(spikeCtrX2, picksY1a-perimeterWidth, spikeHoleDiameter);
 }
 
 module spikeHole(xLocation, yLocation, spikeHoleDiameter)
@@ -176,7 +176,7 @@ module c(p)
 
 module clip(d=0)
 {
-	tc([-200, -200, picksZ/2-d], 400);
+	// tc([-200, -200, picksZ/2-d], 400);
 	// tc([picksX1/2-d, -200, -200], 400);
 }
 
@@ -189,13 +189,13 @@ if(developmentRender)
 
 	display() pick_1_4();
 	// %pickModifer_1_4();
-	displayGhost() spikeGhost(1/4);
+	// displayGhost() spikeGhost(1/4);
 
-	displayGhost() translate([picksX1+spikeCtrOffsetX, picksY1a+picksY2, 0]) rotate([0,0,180]) 
-	{
-		pick_1_4();
-		spikeGhost(1/4);
-	}
+	// displayGhost() translate([picksX1+spikeCtrOffsetX, picksY1a+picksY2, 0]) rotate([0,0,180]) 
+	// {
+	// 	pick_1_4();
+	// 	spikeGhost(1/4);
+	// }
 }
 else
 {
