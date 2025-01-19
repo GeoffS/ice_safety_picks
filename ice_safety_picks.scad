@@ -14,7 +14,7 @@ makePickModifier_1_4 = false;
 picksX1 = 50;
 picksX2 = picksX1/2;
 picksY2 = picksX2;
-picksY1 = 154;
+picksY1 = 150;
 picksY1a = picksY1 - picksY2;
 picksZ = picksX2;
 
@@ -24,7 +24,7 @@ picksCornerDia = 14;
 picksCornerCZ = 5;
 picksCornerRadius = 5;
 
-spikeLength = 5.2 * 25.4;
+spikeLength = 4.9 * 25.4;
 
 echo("spikeLength = ", spikeLength);
 
@@ -48,9 +48,11 @@ p6 = [ 0, y1,  0];
 p7 = [x2, y1,  0];
 
 modifierDia = picksZ - picksCornerCZ*2 - 2;
-modifierY = modifierDia;
+modifierY = 21;
 modifierOffsetY = 2;
 modifierEndY = modifierY + modifierOffsetY;
+
+echo(str("modifierY = ", modifierY));
 
 spikeHoleSacrificialThickness = 2*perimeterWidth;
 
@@ -227,14 +229,14 @@ if(developmentRender)
 
 
 	display() pick_1_4();
-	// %pickModifer_1_4();
-	// displayGhost() spikeGhost(1/4);
+	%pickModifer_1_4();
+	displayGhost() spikeGhost(1/4);
 
-	// displayGhost() translate([picksX1+spikeCtrOffsetX, picksY1a+picksY2, 0]) rotate([0,0,180]) 
-	// {
-	// 	pick_1_4();
-	// 	spikeGhost(1/4);
-	// }
+	displayGhost() translate([picksX1+spikeCtrOffsetX, picksY1a+picksY2, 0]) rotate([0,0,180]) 
+	{
+		pick_1_4();
+		spikeGhost(1/4);
+	}
 }
 else
 {
