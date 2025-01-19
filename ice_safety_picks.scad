@@ -114,74 +114,7 @@ module pickBodyCore(spikeHoleDiameter)
 
 			insideCornerChamfer();
 			translate([0,0,picksZ]) mirror([0,0,1]) insideCornerChamfer();
-			
-			// // WARNING: Much magic below!!!
-			// transitionZ = 3.55;
-			// translate([picksX2, picksY2, 0])
-			// {
-			// 	// torus(ID = picksCornerDia, OD = picksCornerDia+2*picksCornerRadius);
-			// 	torusCtrZ = 7.08;
-			// 	difference()
-			// 	{
-			// 		translate([0,0, torusCtrZ]) torus2a(radius = picksCornerRadius, translation = 12.00);
-			// 		translate([0,0, torusCtrZ]) 
-			// 		{
-			// 			tcu([-200,0,-200], 400);
-			// 			tcu([0,-200,-200], 400);
-			// 			tcu([-100,-200,0], 400);
-			// 		}
-			// 		tcu([-100,-200,-400+transitionZ], 400);
-			// 	}
-
-			// 	difference()
-			// 	{
-			// 		tcy([0,0,0], d=50, h=transitionZ);
-			// 		translate([0,0,-15 + picksCornerCZ + picksCornerDia/2]) cylinder(d1=30, d2=0, h=15.075);
-			// 		tcy([0,0,transitionZ], d=30, h=100);
-			// 		tcu([-200,0,-200], 400);
-			// 		tcu([0,-200,-200], 400);
-			// 		tcu([-100,-200,-400], 400);
-			// 	}
-			// }
-
-			// // Inside corner filler:
-			// translate([picksX2, picksY2, 0])
-			// {
-			// 	cfXY = picksCornerCZ + picksCornerDia/2;
-			// 	tcu([-cfXY, -cfXY, 0], [cfXY, cfXY, picksZ]);
-			// }
 		}
-
-		// Inside corner treatment:
-		
-		// translate([picksX2+picksCornerDia/2, picksY2+picksCornerDia/2, 0])
-		// {
-		// 	// tcy([0,0,0], d=picksCornerDia, h=picksZ);
-		// 	// #translate([0, 0, picksZ - picksCornerCZ - picksCornerDia/2]) cylinder(d2=30, d1=0, h=15);
-		// 	// translate([0, 0, 0]) radiusedChamferedCylinderEndFullParams(d=picksCornerDia, h=picksCornerCZ, r=7, cz=picksCornerCZ);//cylinder(d2=30, d1=0, h=15);
-		// 	// translate([0, 0,    -15 + picksCornerCZ + picksCornerDia/2]) cylinder(d1=30, d2=0, h=15);
-
-			
-		// 	// %difference()
-		// 	// {
-		// 	// 	translate([0,0,-15 + picksCornerCZ + picksCornerDia/2]) cylinder(d1=30, d2=0, h=15);
-		// 	// 	tcy([0,0,transitionZ], d=30, h=100);
-		// 	// }
-		// 	// %difference()
-		// 	// {
-		// 	// 	// torus(ID = picksCornerDia, OD = picksCornerDia+2*picksCornerRadius);
-		// 	// 	torusCtrZ = 7;
-		// 	// 	translate([0,0, torusCtrZ]) torus2a(radius = picksCornerRadius, translation = 12);
-		// 	// 	translate([0,0, torusCtrZ]) 
-		// 	// 	{
-		// 	// 		tcu([-200,0,-200], 400);
-		// 	// 		tcu([0,-200,-200], 400);
-		// 	// 		tcu([-100,-200,0], 400);
-		// 	// 	}
-		// 	// 	tcu([-100,-200,-400+transitionZ], 400);
-		// 	// }
-		// 	// %corner(p = []);
-		// }
 
 		// Spike holes:
 		spikeHole(spikeCtrX1+spikeCtrOffsetX, -10, spikeHoleDiameter);
@@ -275,7 +208,6 @@ module spikeHoleSacrificialLayer(xLocation, yLocation, spikeHoleDiameter)
 
 module corner(p)
 {
-	// translate(p) simpleChamferedCylinderDoubleEnded1(d=picksCornerDia, h=picksZ, cz=picksCornerCZ);
 	translate(p) radiusedChamferedCylinderDoubleEnded(d=picksCornerDia, h=picksZ, r=picksCornerRadius, cz=picksCornerCZ);
 }
 
