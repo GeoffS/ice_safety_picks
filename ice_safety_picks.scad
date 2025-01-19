@@ -246,7 +246,6 @@ module insideCornerChamfer()
 			tcu([-100,-200,-400], 400);
 		}
 
-		// %tcy([0,0,torusCtrZ], d=14, h=picksZ-2*torusCtrZ);
 		xy = 10;
 		difference()
 		{
