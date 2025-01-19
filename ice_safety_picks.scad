@@ -111,6 +111,8 @@ module pickBodyCore(spikeHoleDiameter)
 			}
 
 			insideCornerChamfer();
+			translate([0,0,picksZ]) mirror([0,0,1]) insideCornerChamfer();
+			
 			// // WARNING: Much magic below!!!
 			// transitionZ = 3.55;
 			// translate([picksX2, picksY2, 0])
@@ -215,14 +217,13 @@ module pickBodyCore(spikeHoleDiameter)
 	// spikeHoleSacrificialLayer(spikeCtrX2, picksY1a-perimeterWidth, spikeHoleDiameter);
 }
 
+// WARNING: Much magic below!!!
+transitionZ = 3.55;
+torusCtrZ = 7.08;
 module insideCornerChamfer()
 {
-	// WARNING: Much magic below!!!
-	transitionZ = 3.55;
 	translate([picksX2, picksY2, 0])
-	{
-		// torus(ID = picksCornerDia, OD = picksCornerDia+2*picksCornerRadius);
-		torusCtrZ = 7.08;
+	{		
 		difference()
 		{
 			translate([0,0, torusCtrZ]) torus2a(radius = picksCornerRadius, translation = 12.00);
@@ -243,6 +244,14 @@ module insideCornerChamfer()
 			tcu([-200,0,-200], 400);
 			tcu([0,-200,-200], 400);
 			tcu([-100,-200,-400], 400);
+		}
+
+		// %tcy([0,0,torusCtrZ], d=14, h=picksZ-2*torusCtrZ);
+		xy = 10;
+		difference()
+		{
+			tcu([-xy, -xy, torusCtrZ], [xy, xy, picksZ-2*torusCtrZ]);
+			tcy([0,0,-100], d=14, h=200);
 		}
 	}
 }
@@ -268,7 +277,7 @@ module clip(d=0)
 	// tc([-200, -200, picksZ/2-d], 400);
 	// tc([picksX1/2-d, -200, -200], 400);
 
-	rotate([0,0,45]) tcu([0,0,-200], 400);
+	// rotate([0,0,45]) tcu([0,0,-200], 400);
 }
 
 if(developmentRender)
