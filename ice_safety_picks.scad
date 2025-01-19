@@ -52,6 +52,8 @@ modifierY = modifierDia;
 modifierOffsetY = 2;
 modifierEndY = modifierY + modifierOffsetY;
 
+spikeHoleSacrificialThickness = 2*perimeterWidth;
+
 module pickModifer_5_32()
 {
 	pickModiferCore(spikeHoleDiameter = 5/32 * 25.4 + 0.3);
@@ -183,6 +185,7 @@ module pickBodyCore(spikeHoleDiameter)
 
 		// Spike holes:
 		spikeHole(spikeCtrX1+spikeCtrOffsetX, -10, spikeHoleDiameter);
+		spikeHoleChamfer(spikeCtrX1+spikeCtrOffsetX, picksY2, spikeHoleDiameter, cz=1.6);
 		spikeHole(spikeCtrX2, modifierEndY, spikeHoleDiameter);
 
 		// Thumb depression:
@@ -211,10 +214,10 @@ module pickBodyCore(spikeHoleDiameter)
 		}
 	}
 	
-	// // Spike hole sacrificial layers:
-	// spikeHoleSacrificialLayer(spikeCtrX1, 0, spikeHoleDiameter);
-	// spikeHoleSacrificialLayer(spikeCtrX1, picksY2-perimeterWidth, spikeHoleDiameter);
-	// spikeHoleSacrificialLayer(spikeCtrX2, picksY1a-perimeterWidth, spikeHoleDiameter);
+	// Spike hole sacrificial layers:
+	spikeHoleSacrificialLayer(spikeCtrX1, 0, spikeHoleDiameter);
+	spikeHoleSacrificialLayer(spikeCtrX1, picksY2-spikeHoleSacrificialThickness, spikeHoleDiameter);
+	spikeHoleSacrificialLayer(spikeCtrX2, picksY1a-spikeHoleSacrificialThickness, spikeHoleDiameter);
 }
 
 // WARNING: Much magic below!!!
@@ -260,9 +263,14 @@ module spikeHole(xLocation, yLocation, spikeHoleDiameter)
 	translate([xLocation, yLocation, picksZ/2]) rotate([-90,0,0]) cylinder(d=spikeHoleDiameter, h=400);
 }
 
+module spikeHoleChamfer(xLocation, yLocation, spikeHoleDiameter, cz)
+{
+	translate([xLocation, yLocation-spikeHoleDiameter/2-cz, picksZ/2]) rotate([-90,0,0]) cylinder(d1=0, d2=20, h=10);
+}
+
 module spikeHoleSacrificialLayer(xLocation, yLocation, spikeHoleDiameter)
 {
-	translate([xLocation, yLocation, picksZ/2]) rotate([-90,0,0]) cylinder(d=spikeHoleDiameter+2, h=perimeterWidth);
+	translate([xLocation, yLocation, picksZ/2]) rotate([-90,0,0]) cylinder(d=spikeHoleDiameter+4, h=spikeHoleSacrificialThickness);
 }
 
 module corner(p)
@@ -273,7 +281,7 @@ module corner(p)
 
 module clip(d=0)
 {
-	// tc([-200, -200, picksZ/2-d], 400);
+	tc([-200, -200, picksZ/2-d], 400);
 	// tc([picksX1/2-d, -200, -200], 400);
 
 	// rotate([0,0,45]) tcu([0,0,-200], 400);
