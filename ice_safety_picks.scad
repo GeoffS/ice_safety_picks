@@ -4,8 +4,6 @@ include <../OpenSCAD_Lib/torus.scad>
 
 perimeterWidth = 0.42;
 
-makePickBody_5_32 = false;
-makePickModifier_5_32 = false;
 makePickBody_3_16 = false;
 makePickModifier_3_16 = false;
 makePickBody_1_4 = false;
@@ -56,11 +54,6 @@ echo(str("modifierY = ", modifierY));
 
 spikeHoleSacrificialThickness = 2*perimeterWidth;
 
-module pickModifer_5_32()
-{
-	pickModiferCore(spikeHoleDiameter = 5/32 * 25.4 + 0.3);
-}
-
 module pickModifer_3_16()
 {
 	pickModiferCore(spikeHoleDiameter = 3/16 * 25.4 + 0.3);
@@ -74,11 +67,6 @@ module pickModifer_1_4()
 module pickModiferCore(spikeHoleDiameter)
 {
 	translate([spikeCtrX2, modifierOffsetY, picksZ/2]) rotate([-90,0,0]) cylinder(d1=modifierDia, d2=spikeHoleDiameter + 2, h=modifierY);
-}
-
-module pick_5_32()
-{
-	pickBodyCore(spikeHoleDiameter = 5/32 * 25.4 + 0.3);
 }
 
 module pick_3_16()
@@ -228,21 +216,18 @@ if(developmentRender)
 	// displayGhost() spikeGhost();
 
 
-	display() pick_1_4();
-	%pickModifer_1_4();
-	displayGhost() spikeGhost(1/4);
+	display() pick_3_16();
+	%pick_3_16();
+	displayGhost() spikeGhost(3/16);
 
 	displayGhost() translate([picksX1+spikeCtrOffsetX, picksY1a+picksY2, 0]) rotate([0,0,180]) 
 	{
-		pick_1_4();
-		spikeGhost(1/4);
+		pick_3_16();
+		spikeGhost(3/16);
 	}
 }
 else
 {
-	if(makePickBody_5_32) pick_5_32();
-	if(makePickModifier_5_32) pickModifer_5_32();
-
 	if(makePickBody_3_16) pick_3_16();
 	if(makePickModifier_3_16) pickModifer_3_16();
 
