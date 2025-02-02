@@ -107,7 +107,7 @@ module pickBodyCore(spikeHoleDiameter)
 		}
 
 		// Spike holes:
-		spikeHole(spikeCtrX1+spikeCtrOffsetX, -10, spikeHoleDiameter);
+		spikeRecess(spikeCtrX1+spikeCtrOffsetX, spikeHoleDiameter);
 		spikeHoleChamfer(spikeCtrX1+spikeCtrOffsetX, picksY2, spikeHoleDiameter, cz=2.7);
 		spikeHole(spikeCtrX2, modifierEndY, spikeHoleDiameter);
 
@@ -138,7 +138,7 @@ module pickBodyCore(spikeHoleDiameter)
 	}
 	
 	// Spike hole sacrificial layers:
-	spikeHoleSacrificialLayer(spikeCtrX1, 0, spikeHoleDiameter);
+	// spikeHoleSacrificialLayer(spikeCtrX1, 0, spikeHoleDiameter);
 	//spikeHoleSacrificialLayer(spikeCtrX1, picksY2-spikeHoleSacrificialThickness, spikeHoleDiameter);
 	spikeHoleSacrificialLayer(spikeCtrX2, picksY1a-spikeHoleSacrificialThickness, spikeHoleDiameter);
 }
@@ -178,6 +178,15 @@ module insideCornerChamfer()
 			tcu([-xy, -xy, torusCtrZ], [xy, xy, picksZ-2*torusCtrZ]);
 			tcy([0,0,-100], d=14, h=200);
 		}
+	}
+}
+
+module spikeRecess(xLocation, spikeHoleDiameter)
+{
+	translate([xLocation, spikeHoleDiameter/2+3*perimeterWidth, picksZ/2]) rotate([-90,0,0]) 
+	{
+		cylinder(d=spikeHoleDiameter, h=400);
+		translate([0,0,-spikeHoleDiameter/2+nothing]) cylinder(d1=0, d2=spikeHoleDiameter, h=spikeHoleDiameter/2);
 	}
 }
 
