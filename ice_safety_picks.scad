@@ -183,7 +183,10 @@ module insideCornerChamfer()
 
 module spikeRecess(xLocation, spikeHoleDiameter)
 {
-	translate([xLocation, spikeHoleDiameter/2+3*perimeterWidth, picksZ/2]) rotate([-90,0,0]) 
+	outerWall = 0.42;
+	innerWall = 0.45;
+	dy = outerWall + 2*innerWall + outerWall;
+	translate([xLocation, spikeHoleDiameter/2+dy, picksZ/2]) rotate([-90,0,0]) 
 	{
 		cylinder(d=spikeHoleDiameter, h=400);
 		translate([0,0,-spikeHoleDiameter/2+nothing]) cylinder(d1=0, d2=spikeHoleDiameter, h=spikeHoleDiameter/2);
