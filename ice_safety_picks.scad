@@ -1,6 +1,6 @@
-include <../OpenSCADdesigns/MakeInclude.scad>
-include <../OpenSCADdesigns/chamferedCylinders.scad>
-use <../OpenSCADdesigns/torus.scad>
+include <../OpenSCAD_Lib/MakeInclude.scad>
+include <../OpenSCAD_Lib/chamferedCylinders.scad>
+include <../OpenSCAD_Lib/torus.scad>
 
 perimeterWidth = 0.42;
 
