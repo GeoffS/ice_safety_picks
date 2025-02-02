@@ -22,7 +22,7 @@ picksCornerDia = 14;
 picksCornerCZ = 5;
 picksCornerRadius = 5;
 
-spikeLength = 4.9 * 25.4;
+spikeLength = 125; //4.9 * 25.4;
 
 echo("spikeLength = ", spikeLength);
 
@@ -108,7 +108,7 @@ module pickBodyCore(spikeHoleDiameter)
 
 		// Spike holes:
 		spikeHole(spikeCtrX1+spikeCtrOffsetX, -10, spikeHoleDiameter);
-		spikeHoleChamfer(spikeCtrX1+spikeCtrOffsetX, picksY2, spikeHoleDiameter, cz=1.6);
+		spikeHoleChamfer(spikeCtrX1+spikeCtrOffsetX, picksY2, spikeHoleDiameter, cz=2.7);
 		spikeHole(spikeCtrX2, modifierEndY, spikeHoleDiameter);
 
 		// Thumb depression:
@@ -139,7 +139,7 @@ module pickBodyCore(spikeHoleDiameter)
 	
 	// Spike hole sacrificial layers:
 	spikeHoleSacrificialLayer(spikeCtrX1, 0, spikeHoleDiameter);
-	spikeHoleSacrificialLayer(spikeCtrX1, picksY2-spikeHoleSacrificialThickness, spikeHoleDiameter);
+	//spikeHoleSacrificialLayer(spikeCtrX1, picksY2-spikeHoleSacrificialThickness, spikeHoleDiameter);
 	spikeHoleSacrificialLayer(spikeCtrX2, picksY1a-spikeHoleSacrificialThickness, spikeHoleDiameter);
 }
 
@@ -217,12 +217,12 @@ if(developmentRender)
 
 
 	display() pick_3_16();
-	%pick_3_16();
+	// %pick_3_16();
 	displayGhost() spikeGhost(3/16);
 
 	displayGhost() translate([picksX1+spikeCtrOffsetX, picksY1a+picksY2, 0]) rotate([0,0,180]) 
 	{
-		pick_3_16();
+		// pick_3_16();
 		spikeGhost(3/16);
 	}
 }
